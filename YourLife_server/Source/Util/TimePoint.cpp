@@ -10,19 +10,19 @@
 
 using namespace ylife;
 
-TimePoint::TimePoint() :
+TimePoint::TimePoint() noexcept :
 	time_min_(0ll)
 {}
 
-TimePoint::TimePoint(const TimePoint& point) :
+TimePoint::TimePoint(const TimePoint& point) noexcept :
 	time_min_(point.time_min_)
 {}
 
-TimePoint::TimePoint(int year, int month, int day, int hour, int min) :
+TimePoint::TimePoint(int year, int month, int day, int hour, int min) noexcept :
 	time_min_((((year * 12ll + month) * 7 + day) * 24 + hour) * 60 + min)
 {}
 
-TimePoint::TimePoint(Date date, Time time) :
+TimePoint::TimePoint(Date date, Time time) noexcept :
 	TimePoint(date.year, date.month, date.day, time.hour, time.min)
 {}
 
@@ -167,6 +167,6 @@ const TimePoint TimePoint::BEGINNING;
 const TimePoint::Date TimePoint::NEW_YEAR { 0, 0, 0 };
 const TimePoint::Time TimePoint::MIDNIGHT { 0, 0 };
 
-TimePoint::TimePoint(long long time_min) :
+TimePoint::TimePoint(long long time_min) noexcept :
 	time_min_(time_min)
 {}

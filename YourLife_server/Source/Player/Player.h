@@ -11,13 +11,20 @@
 namespace ylife
 {
 
+enum class EGender
+{
+	MALE,
+	FEMALE
+};
+
 class Player
 {
 
 private:
-	std::string login_;
-	std::string name_;
-	std::string surname_;
+	std::wstring login_;
+	std::wstring name_;
+	std::wstring surname_;
+	EGender gender_;
 };
 
 }

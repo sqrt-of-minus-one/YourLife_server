@@ -10,11 +10,11 @@
 
 using namespace ylife;
 
-TimeInterval::TimeInterval() :
+TimeInterval::TimeInterval() noexcept :
 	time_min_(0ll)
 {}
 
-TimeInterval::TimeInterval(const TimeInterval& interval) :
+TimeInterval::TimeInterval(const TimeInterval& interval) noexcept :
 	time_min_(interval.time_min_)
 {}
 
@@ -66,6 +66,7 @@ int TimeInterval::get_mins_in_hour() const noexcept
 TimeInterval& TimeInterval::operator=(const TimeInterval& interval) noexcept
 {
 	time_min_ = interval.time_min_;
+	return *this;
 }
 
 TimeInterval TimeInterval::operator+() const noexcept
@@ -132,7 +133,7 @@ double TimeInterval::operator/(const TimeInterval& interval) const
 	{
 		throw std::domain_error("Attempt to divide by zero");
 	}
-	return time_min_ / interval.time_min_;
+	return static_cast<long double>(time_min_) / interval.time_min_;
 }
 
 TimeInterval& TimeInterval::operator+=(const TimeInterval& interval) noexcept

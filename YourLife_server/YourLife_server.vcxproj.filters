@@ -20,6 +20,9 @@
     <Filter Include="Source\Util">
       <UniqueIdentifier>{32f51413-9035-46b4-b151-3093f004e146}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Util\Json">
+      <UniqueIdentifier>{a1620bbb-5d3b-4a67-9979-fb1426ca56bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Game\Game.h">
@@ -37,6 +40,18 @@
     <ClInclude Include="Source\Util\TimeInterval.h">
       <Filter>Source\Util</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Util\Json\Value.h">
+      <Filter>Source\Util\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Json\Array.h">
+      <Filter>Source\Util\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Json\Element.h">
+      <Filter>Source\Util\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Util\Json\JsonObject.h">
+      <Filter>Source\Util\Json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Game\Game.cpp">
@@ -53,6 +68,18 @@
     </ClCompile>
     <ClCompile Include="Source\Util\TimePoint.cpp">
       <Filter>Source\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Json\Array.cpp">
+      <Filter>Source\Util\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Json\Element.cpp">
+      <Filter>Source\Util\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Json\JsonObject.cpp">
+      <Filter>Source\Util\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Util\Json\Value.cpp">
+      <Filter>Source\Util\Json</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
