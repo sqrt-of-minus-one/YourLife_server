@@ -9,6 +9,14 @@ include_directories(yourlife_server Source)
 
 set(SOURCE_TIME Source/Time/Date.cpp Source/Time/Time.cpp Source/Time/DateTime.cpp Source/Time/TimeInterval.cpp)
 set(SOURCE_UTIL Source/Util/Util.cpp)
+set(SOURCE_WORLD Source/World/Id.cpp Source/World/Registry.cpp Source/World/World.cpp
+	Source/World/Command/Command.cpp
+	Source/World/Item/Item.cpp
+	Source/World/Location/Location.cpp
+	Source/World/Npc/Npc.cpp
+	Source/World/Player/Player.cpp
+	Source/World/Responce/Responce.cpp
+	Source/World/Thing/Thing.cpp)
 
 set(SOURCE_EXE ${SOURCE_TIME} ${SOURCE_UTIL} Source/main.cpp)
 

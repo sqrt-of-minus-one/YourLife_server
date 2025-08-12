@@ -1,7 +1,7 @@
     ////////////////////////////////////////
    //        YourLife by sqrt(-1)        //
   //                                    //
- //  File: Player.h                    //
+ //  File: Npc.h                       //
 ////////////////////////////////////////
 
 #pragma once
@@ -9,7 +9,7 @@
 namespace ylife
 {
 
-class Player
+class Npc
 {};
 
 }
