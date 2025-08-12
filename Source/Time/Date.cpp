@@ -150,6 +150,7 @@ int Date::get_year() const noexcept
 
 EMonth Date::get_month() const noexcept
 {
+	// The first month is 1, not 0
 	return static_cast<EMonth>((get_day_of_year() - 1) / DAYS_IN_MONTH + 1);
 }
 
@@ -170,7 +171,7 @@ int Date::get_day_since_origin() const noexcept
 
 TimeInterval Date::get_time_since_new_year() const noexcept
 {
-	return TimeInterval::days(get_day_of_year() - 1);
+	return TimeInterval::days(util::uniform_mod(days_, DAYS_IN_YEAR));
 }
 
 TimeInterval Date::get_time_since_origin() const noexcept

@@ -12,13 +12,17 @@
 namespace ylife
 {
 
+// In the game 1 month = 1 week = 7 days
+// The smallest time unit is a minute
+// Negative intervals are supported
 class TimeInterval
 {
 private:
 	long long minutes_ = 0;
 
 public:
-	TimeInterval() noexcept = default;
+	// Use static min(), hours() etc. methods or literals to create an interval
+	TimeInterval() noexcept = default; // 0 minutes
 	TimeInterval(const TimeInterval& interval) noexcept = default;
 
 	long long min() const noexcept;
@@ -27,6 +31,7 @@ public:
 	int months() const noexcept;
 	int years() const noexcept;
 
+	// Completely discard the old value
 	void set_min(long long min) noexcept;
 	void set_hours(long long hours) noexcept;
 	void set_days(int days) noexcept;
@@ -34,25 +39,28 @@ public:
 	void set_years(int years) noexcept;
 
 	/* Format:
-		#?		Any character after # remains the same
-		-		minus sign if negative
-		+		minus or plus sign
-		y		years
-		M		months of year
-		MM		months of year, presicely 2 digits
-		M*		months, total
-		d		days of month
-		dd		days of month, presicely 2 digits
-		D		days of year
-		DD		days of year, presicely 2 digits
-		d*		days, total
-		h		hours of day
-		hh		hours of day, presicely 2 digits
-		h*		hours, total
-		m		minutes of hour
-		mm		minutes of hour, presicely 2 digits
-		md		minutes of day
-		m*		minutes, total
+		#?      Any character after # (except '|') remains the same, e.g.:
+		            "months: M*, days: d" => "1ont13s: 2, 4a0s: 4", "#ont#hs: M*, #da#ys: d" => "months: 2, days: 4"
+		#|      is removed from the string; can be used to separate different groups, e.g.:
+		            "md" => "1", "m#|d" => "14"
+		-       minus sign if negative
+		+       minus or plus sign
+		y       years
+		M       months of year
+		MM      months of year, presicely 2 digits
+		M*      months, total
+		d       days of month
+		dd      days of month, presicely 2 digits
+		D       days of year
+		DD      days of year, presicely 2 digits
+		d*      days, total
+		h       hours of day
+		hh      hours of day, presicely 2 digits
+		h*      hours, total
+		m       minutes of hour
+		mm      minutes of hour, presicely 2 digits
+		md      minutes of day
+		m*      minutes, total
 	*/
 	std::string to_string(const std::string& format = DEFAULT_FORMAT) const;
 

@@ -25,22 +25,26 @@ struct SDateTime
 	STime time() const noexcept;
 };
 
+// In the game 1 month = 1 week = 7 days
 class DateTime
 {
 	friend class Date;
 	friend class Time;
 
 private:
+	// minutes_ = 0 means the midnight of 1 Jan 1
 	long long minutes_ = 0;
 
 public:
 	DateTime() noexcept = default;
 	DateTime(const DateTime& date_time) noexcept = default;
+	// Similarly to Date and Time, ill-formed dates and times are supported by the constructors
 	DateTime(SDateTime time) noexcept;
 	DateTime(SDate date, STime time = Time::MIDNIGHT.get_time()) noexcept;
 	DateTime(Date date, Time time = Time::MIDNIGHT) noexcept;
 	DateTime(int year, EMonth month, int day, int hour = 0, int min = 0) noexcept;
 
+	// The methods work similarly to those of Date and Time classes
 	SDateTime get_date_time() const noexcept;
 	SDate get_date() const noexcept;
 	Date date() const noexcept;
@@ -82,7 +86,11 @@ public:
 	void set_min_since_origin(long long min) noexcept;
 
 	/* Format:
-		#?		any character after # remains the same
+		#?      any character after # (except '|') remains the same, e.g.:
+		            "day: d" => "1am3: 1", "#d#a#y: d" => "day: 1"
+		            "hhours, mmin" => "12ours, 03in", "h#hours, m#min" => "12hours, 3min"
+		#|      is removed from the string; can be used to separate different groups, e.g.:
+		            "MMMM" => "January", "MM#|MM" => "0101"
 		y		year, at least 1 digit
 		yy		year, at least 2 digits (or minus and 1 digit if negative)
 		yyy		year, at least 3 digits (or minus and 2 digits if negative)
@@ -121,6 +129,7 @@ public:
 	DateTime operator-(const TimeInterval& interval) const noexcept;
 	TimeInterval operator-(const DateTime& date_time) const noexcept;
 
+	// Increase/decrease by 1 minute
 	DateTime operator++() noexcept;
 	DateTime operator++(int) noexcept;
 	DateTime operator--() noexcept;
@@ -132,7 +141,7 @@ public:
 	static constexpr int MIN_IN_MONTH = Time::MIN_IN_DAY * Date::DAYS_IN_MONTH;
 	static constexpr int MIN_IN_YEAR = Time::MIN_IN_DAY * Date::DAYS_IN_YEAR;
 
-	static const DateTime ORIGIN;
+	static const DateTime ORIGIN; // 00:00 of 1 Jan 1
 
 	static const std::string DEFAULT_FORMAT;
 

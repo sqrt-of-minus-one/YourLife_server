@@ -20,11 +20,13 @@ int util::count_letters(const std::string& string, int from, int max) noexcept
 
 void util::append_up_to_two_digits(std::string& destination, int number, int digits) noexcept
 {
+	// The first and second digits
 	int first = number / 10 % 10;
 	int second = number % 10;
-	if (first != 0 || digits > 1)
+	if (first != 0 ||	// If the first digit is not zero, it needs to be pushed anyway
+		digits > 1)		// If not, it only needs to be pushed if more than one digit is required
 	{
 		destination.push_back('0' + first);
 	}
-	destination.push_back('0' + second);
+	destination.push_back('0' + second); // Push the section digit
 }

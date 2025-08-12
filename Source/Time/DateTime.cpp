@@ -245,74 +245,85 @@ std::string DateTime::to_string(const std::string& format) const
 	{
 		switch (format[i])
 		{
-		case '#': // #.
+		case '#': // #?
 		{
-			result.push_back(format[i + 1] == '\0' ? '#' : format[i + 1]);
-			i += 1;
+			switch (format[i + 1])
+			{
+			case '|': // #| => skip
+				break;
+			case '\0': // The end of the string => push the #
+				result.push_back('#');
+				break;
+			default: // Push the character after the # (but not the #)
+				result.push_back(format[i + 1]);
+			}
+			i += 1; // 2 characters were processed instead of 1
 			break;
 		}
-		case 'y':
+		case 'y': // Year
 		{
-			std::string year = std::to_string(get_year());
-			int count = util::count_letters(format, i, 4);
+			std::string year = std::to_string(get_year()); // The year
+			int count = util::count_letters(format, i, 4); // How many digits are required
 			while (year.length() < count)
 			{
+				// Push zeros into the string 
 				year.insert(year.front() == '-' ? 1 : 0, "0");
 			}
 			result.append(year);
 			i += count - 1;
 			break;
 		}
-		case 'M':
+		case 'M': // Month
 		{
 			int count = util::count_letters(format, i, 4);
 			switch (count)
 			{
 			case 1:
 			case 2:
+				// Add 1 or 2 digits
 				util::append_up_to_two_digits(result, static_cast<int>(get_month()), count);
 				break;
-			case 3:
+			case 3: // Short name
 				result.append(get_month_short_name(get_month()));
 				break;
-			case 4:
+			case 4: // Full name
 				result.append(get_month_full_name(get_month()));
 				break;
 			}
 			i += count - 1;
 			break;
 		}
-		case 'd':
+		case 'd': // Day of month
 		{
 			int count = util::count_letters(format, i, 4);
 			switch (count)
 			{
 			case 2:
-				result.push_back('0');
+				result.push_back('0'); // Day of month always has only 1 digit
 				[[fallthrough]];
 			case 1:
 				result.push_back('0' + get_day());
 				break;
-			case 3:
-				result.append(get_day_full_name(static_cast<EWeekDay>(get_day())));
-				break;
-			case 4:
+			case 3: // Short name
 				result.append(get_day_short_name(static_cast<EWeekDay>(get_day())));
+				break;
+			case 4: // Full name
+				result.append(get_day_full_name(static_cast<EWeekDay>(get_day())));
 				break;
 			}
 			i += count - 1;
 			break;
 		}
-		case 'D':
+		case 'D': // Day of year
 		{
-			int count = (format[i + 1] == 'D') ? 2 : 1;
+			int count = (format[i + 1] == 'D') ? 2 : 1; // How many digits are required
 			util::append_up_to_two_digits(result, get_day_of_year(), count);
 			i += count - 1;
 			break;
 		}
-		case 'h':
+		case 'h': // Hour (12)
 		{
-			int count = (format[i + 1] == 'h') ? 2 : 1;
+			int count = (format[i + 1] == 'h') ? 2 : 1; // How many digits are required
 			int hour = get_hour();
 			if (hour == 0)
 			{
@@ -326,14 +337,14 @@ std::string DateTime::to_string(const std::string& format) const
 			i += count - 1;
 			break;
 		}
-		case 'H':
+		case 'H': // Hour (24)
 		{
-			int count = (format[i + 1] == 'H') ? 2 : 1;
+			int count = (format[i + 1] == 'H') ? 2 : 1; // How many digits are required
 			util::append_up_to_two_digits(result, get_hour(), count);
 			i += count - 1;
 			break;
 		}
-		case 'a':
+		case 'a': // am/pm
 		{
 			int hour = get_hour();
 			bool is_pm = hour > 12 || hour == 0;
@@ -348,7 +359,7 @@ std::string DateTime::to_string(const std::string& format) const
 			}
 			break;
 		}
-		case 'A':
+		case 'A': // AM/PM
 		{
 			int hour = get_hour();
 			bool is_pm = hour > 12 || hour == 0;
@@ -363,14 +374,14 @@ std::string DateTime::to_string(const std::string& format) const
 			}
 			break;
 		}
-		case 'm':
+		case 'm': // Minutes
 		{
-			int count = (format[i + 1] == 'm') ? 2 : 1;
+			int count = (format[i + 1] == 'm') ? 2 : 1; // How many digits are required
 			util::append_up_to_two_digits(result, get_min(), count);
 			i += count - 1;
 			break;
 		}
-		default:
+		default: // Any other character
 		{
 			result.push_back(format[i]);
 		}

@@ -72,8 +72,17 @@ std::string TimeInterval::to_string(const std::string& format) const
 		{
 		case '#':
 		{
-			result.push_back(format[i + 1] == '\0' ? '#' : format[i + 1]);
-			i += 1;
+			switch (format[i + 1])
+			{
+			case '|': // #| => skip
+				break;
+			case '\0': // The end of the string => push the #
+				result.push_back('#');
+				break;
+			default: // Push the character after the # (but not the #)
+				result.push_back(format[i + 1]);
+			}
+			i += 1; // 2 characters were processed instead of 1
 			break;
 		}
 		case '-':
@@ -89,84 +98,84 @@ std::string TimeInterval::to_string(const std::string& format) const
 			result.push_back(minutes_ < 0 ? '-' : '+');
 			break;
 		}
-		case 'y':
+		case 'y': // Years
 		{
 			result.append(std::to_string(std::abs(years())));
 			break;
 		}
-		case 'M':
+		case 'M': // Months
 		{
-			if (format[i + 1] == '*')
+			if (format[i + 1] == '*') // Total
 			{
 				result.append(std::to_string(std::abs(months())));
 				i += 1;
 			}
-			else
+			else // Of year
 			{
-				int count = (format[i + 1] == 'M') ? 2 : 1;
+				int count = (format[i + 1] == 'M') ? 2 : 1; // How many digits are required
 				util::append_up_to_two_digits(result, std::abs(months()) % Date::MONTHS_IN_YEAR, count);
 				i += count - 1;
 			}
 			break;
 		}
-		case 'd':
+		case 'd': // Days
 		{
-			if (format[i + 1] == '*')
+			if (format[i + 1] == '*') // Total
 			{
 				result.append(std::to_string(std::abs(days())));
 				i += 1;
 			}
-			else
+			else // Of month
 			{
-				int count = (format[i + 1] == 'd') ? 2 : 1;
+				int count = (format[i + 1] == 'd') ? 2 : 1; // How many digits are required
 				util::append_up_to_two_digits(result, std::abs(days()) % Date::DAYS_IN_MONTH, count);
 				i += count - 1;
 			}
 			break;
 		}
-		case 'D':
+		case 'D': // Days of year
 		{
-			int count = (format[i + 1] == 'D') ? 2 : 1;
+			int count = (format[i + 1] == 'D') ? 2 : 1; // How many digits are required
 			util::append_up_to_two_digits(result, std::abs(days()) % Date::DAYS_IN_YEAR, count);
 			i += count - 1;
 			break;
 		}
-		case 'h':
+		case 'h': // Hours
 		{
-			if (format[i + 1] == '*')
+			if (format[i + 1] == '*') // Total
 			{
 				result.append(std::to_string(std::abs(hours())));
 				i += 1;
 			}
-			else
+			else // Of day
 			{
-				int count = (format[i + 1] == 'h') ? 2 : 1;
+				int count = (format[i + 1] == 'h') ? 2 : 1; // How many digits are required
 				util::append_up_to_two_digits(result, std::abs(hours()) % Time::HOURS_IN_DAY, count);
 				i += count - 1;
 			}
 			break;
 		}
-		case 'm':
+		case 'm': // Minutes
 		{
-			if (format[i + 1] == '*')
+			if (format[i + 1] == '*') // Total
 			{
 				result.append(std::to_string(std::abs(min())));
 				i += 1;
 			}
-			else if (format[i + 1] == 'd')
+			else if (format[i + 1] == 'd') // Of day
 			{
 				result.append(std::to_string(std::abs(min()) % Time::MIN_IN_DAY));
 				i += 1;
 			}
-			else
+			else // Of hour
 			{
-				int count = (format[i + 1] == 'm') ? 2 : 1;
+				int count = (format[i + 1] == 'm') ? 2 : 1; // How many digits are required
 				util::append_up_to_two_digits(result, std::abs(min()) % Time::MIN_IN_HOUR, count);
 				i += count - 1;
 			}
 			break;
 		}
-		default:
+		default: // Any other character
 		{
 			result.push_back(format[i]);
 		}
